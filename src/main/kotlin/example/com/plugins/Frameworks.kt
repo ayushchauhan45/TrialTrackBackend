@@ -10,9 +10,7 @@ fun Application.configureFrameworks() {
         slf4jLogger()
         modules(module {
             single<HelloService> {
-                HelloService {
-                    println(environment.log.info("Hello, World!"))
-                }
+
             }
         })
     }

@@ -1,8 +1,8 @@
 
 val kotlin_version: String by project
 val logback_version: String by project
-val mongo_version: String by project
 val koin_version: String by project
+val kmongo_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.20"
@@ -30,9 +30,6 @@ dependencies {
     implementation("io.ktor:ktor-server-websockets-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("org.mongodb:mongodb-driver-core:$mongo_version")
-    implementation("org.mongodb:mongodb-driver-sync:$mongo_version")
-    implementation("org.mongodb:bson:$mongo_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.ktor:ktor-serialization-gson-jvm")
@@ -45,4 +42,10 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    implementation("org.litote.kmongo:kmongo:5.1.0")
+    implementation("org.litote.kmongo:kmongo-coroutine:5.1.0")
+
+
+
 }
