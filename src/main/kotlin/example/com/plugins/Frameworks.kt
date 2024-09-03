@@ -8,10 +8,8 @@ import org.koin.logger.slf4jLogger
 fun Application.configureFrameworks() {
     install(Koin) {
         slf4jLogger()
-        modules(module {
-            single<HelloService> {
+        modules(module{
 
-            }
         })
     }
 }

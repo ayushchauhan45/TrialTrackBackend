@@ -1,5 +1,6 @@
 package example.com
 
+import example.com.data.util.Utils
 import example.com.plugins.*
 import io.ktor.server.application.*
 import org.litote.kmongo.coroutine.coroutine
@@ -9,8 +10,7 @@ fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
 }
 
-val dbClient = KMongo.createClient("").coroutine
-val getDataBase = dbClient.getDatabase("")
+val dbClient = KMongo.createClient("").coroutine.getDatabase(Utils.DATABASE_NAME)
 
 fun Application.module() {
     configureSecurity()
