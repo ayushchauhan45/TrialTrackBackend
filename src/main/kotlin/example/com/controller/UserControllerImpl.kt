@@ -15,7 +15,7 @@ class UserControllerImpl(
 
     override suspend fun getUserByUsername(username:String): User? {
       return  this.user.findOne(
-           User ::username eq username
+           User::username eq username
        )
     }
 }
