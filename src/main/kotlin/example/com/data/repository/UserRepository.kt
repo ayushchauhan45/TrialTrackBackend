@@ -4,7 +4,7 @@ import example.com.data.model.User
 
 interface UserRepository {
 
-    suspend fun createUser(user:User)
+    suspend fun createUser(user:User): Boolean
 
     suspend fun getUserById(id:String):User?
 
