@@ -14,12 +14,14 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.java.KoinJavaComponent.inject
+import org.koin.ktor.ext.inject
 
 
-fun Route.signUp(
-    userRepository: UserRepository,
-    hashService: HashService
-){
+fun Route.signUp(){
+   val  userRepository : UserRepository by inject()
+   val hashService: HashService by inject()
+
     post("/user/signup") {
         val createUser = call.receiveOrNull<UserRequest>()?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
@@ -72,9 +74,11 @@ fun Route.signUp(
 
 
 
-fun Route.loginUser(userRepository: UserRepository,hashService: HashService,tokenService: tokenService, tokenConfig: tokenConfig
-){
-
+fun Route.loginUser(){
+ val userRepository: UserRepository by inject()
+    val  hashService: HashService by inject()
+    val tokenService: tokenService by inject()
+    val tokenConfig: tokenConfig by inject()
     post ("/user/login"){
                 val request =call.receiveOrNull<loginRequest>()?:kotlin.run {
                    call.respond(HttpStatusCode.BadRequest)

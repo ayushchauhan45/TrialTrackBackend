@@ -1,8 +1,10 @@
 package example.com
 
+import example.com.DI.mainModule
 import example.com.data.util.Utils
 import example.com.plugins.*
 import io.ktor.server.application.*
+import org.koin.ktor.plugin.Koin
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
@@ -10,7 +12,6 @@ fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
 }
 
-val dbClient = KMongo.createClient("").coroutine.getDatabase(Utils.DATABASE_NAME)
 
 fun Application.module() {
     configureSecurity()
@@ -19,4 +20,9 @@ fun Application.module() {
     configureFrameworks()
     configureMonitoring()
     configureRouting()
+
+    install(Koin){
+        modules(mainModule)
+    }
+
 }
