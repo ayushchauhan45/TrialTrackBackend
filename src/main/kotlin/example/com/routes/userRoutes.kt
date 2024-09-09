@@ -4,6 +4,7 @@ import example.com.Security.Hash.HashService
 import example.com.Security.token.TokenClaims
 import example.com.Security.token.tokenConfig
 import example.com.Security.token.tokenService
+import example.com.data.model.Client
 import example.com.data.model.User
 import example.com.data.request.DetailRequest
 import example.com.repository.UserRepository
@@ -11,6 +12,7 @@ import example.com.data.request.UserRequest
 import example.com.data.request.loginRequest
 import example.com.data.response.AuthResponse
 import example.com.data.util.role
+import example.com.repository.ClientDetailRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -119,6 +121,37 @@ fun Route.loginUser(){
                 )
             )
 
+        }
+    }
+}
+
+fun Route.userDetail(){
+    val clientDetailRepository:ClientDetailRepository by inject()
+    role("Client"){
+        post("/user/client/detail"){
+            val detailRequest = call.receiveOrNull<DetailRequest>() ?: kotlin.run {
+                call.respond(HttpStatusCode.BadRequest)
+                return@post
+            }
+            val isAllFieldEntered = detailRequest.name.isBlank()||detailRequest.city.isBlank()||detailRequest.state.isBlank()||detailRequest.age.toString().isBlank()
+
+            if (isAllFieldEntered){
+                call.respond(HttpStatusCode.BadRequest,"Enter the details")
+                return@post
+            }
+            val client = Client(
+                name= detailRequest.name,
+                age = detailRequest.age ,
+                city = detailRequest.city ,
+                state = detailRequest.state,
+                image = detailRequest.image
+            )
+            val enterDetail = clientDetailRepository.enterClientDetail(client)
+
+            if (!enterDetail){
+                call.respond(HttpStatusCode.BadRequest,"Detail Not Entered......try again")
+                return@post
+            }
         }
     }
 }

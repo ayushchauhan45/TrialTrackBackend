@@ -27,7 +27,6 @@ val RoleBasedAuthorizationPlugin = createRouteScopedPlugin(
                 call.respond(HttpStatusCode.Forbidden)
             }
         }
-
     }
 }
 
