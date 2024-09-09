@@ -1,4 +1,4 @@
-package example.com.data.repository
+package example.com.repository
 
 import example.com.data.model.User
 import org.litote.kmongo.coroutine.CoroutineDatabase

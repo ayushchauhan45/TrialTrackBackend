@@ -1,6 +1,7 @@
 package example.com
 
 import example.com.DI.mainModule
+import example.com.Security.token.tokenConfig
 import example.com.data.util.Utils
 import example.com.plugins.*
 import io.ktor.server.application.*
@@ -14,7 +15,16 @@ fun main(args: Array<String>) {
 
 
 fun Application.module() {
-    configureSecurity()
+
+    val config = tokenConfig(
+        issuer = environment.config.property("jwt.issuer").getString(),
+        audience = environment.config.property("jwt.audience").getString(),
+        expiresIn = 365L *1000L* 60L*60L*24L,
+        secret = System.getenv("JWT_SECRET")
+    )
+
+
+    configureSecurity(config)
     configureSockets()
     configureSerialization()
     configureFrameworks()
