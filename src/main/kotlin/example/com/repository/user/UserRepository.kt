@@ -1,4 +1,4 @@
-package example.com.repository
+package example.com.repository.user
 
 import example.com.data.model.User
 

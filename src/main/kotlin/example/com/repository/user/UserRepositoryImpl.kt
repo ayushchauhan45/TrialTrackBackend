@@ -1,12 +1,10 @@
-package example.com.repository
+package example.com.repository.user
 
 import example.com.data.model.User
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 
-class UserRepositoryImpl(
-     db:CoroutineDatabase
-): UserRepository {
+class UserRepositoryImpl(db:CoroutineDatabase): UserRepository {
 
     private val user = db.getCollection<User>()
     override suspend fun createUser(user: User):Boolean {

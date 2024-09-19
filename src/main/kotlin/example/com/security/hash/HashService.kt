@@ -1,4 +1,4 @@
-package example.com.Security.Hash
+package example.com.security.hash
 
 interface HashService {
 

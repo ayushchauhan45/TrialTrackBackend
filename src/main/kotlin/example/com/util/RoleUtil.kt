@@ -1,4 +1,4 @@
-package example.com.data.util
+package example.com.util
 
 import example.com.plugins.RoleBasedAuthorizationPlugin
 import io.ktor.server.application.*
@@ -6,8 +6,9 @@ import io.ktor.server.routing.*
 
 fun Route.role(vararg hasAnyRole:String,
                      build:Route.()->Unit){
-    install(RoleBasedAuthorizationPlugin){
+        install(RoleBasedAuthorizationPlugin){
         roles = hasAnyRole.toSet()
     }
     build()
+
 }

@@ -10,5 +10,5 @@ data class Client(
     val age:Int,
     val city:String,
     val state:String,
-    val image:String?
+    val image:String
 )

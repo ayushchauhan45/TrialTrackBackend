@@ -22,6 +22,8 @@ application {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
+
 }
 
 dependencies {
@@ -45,6 +47,9 @@ dependencies {
 
     implementation("org.litote.kmongo:kmongo:5.1.0")
     implementation("org.litote.kmongo:kmongo-coroutine:5.1.0")
+
+    implementation("com.github.omkar-tenkale:ktor-role-based-auth:0.2.0")
+
 
 
 

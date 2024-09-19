@@ -1,4 +1,4 @@
-package example.com.repository
+package example.com.repository.client
 
 import example.com.data.model.Client
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -6,7 +6,7 @@ import org.litote.kmongo.eq
 
 class ClientDetailRepositoryImpl(
      db:  CoroutineDatabase
-):ClientDetailRepository {
+): ClientDetailRepository {
 
     private val clientDB  = db.getCollection<Client>()
     override suspend fun enterClientDetail(client: Client):Boolean {
