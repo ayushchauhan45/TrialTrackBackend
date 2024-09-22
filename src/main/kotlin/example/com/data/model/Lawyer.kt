@@ -7,6 +7,12 @@ data class Lawyer(
     @BsonId
     val id:String = ObjectId().toString(),
     val name:String,
-    val type:String
+    val type:String,
+    val Bio:Long,
+    val graduation:String,
+    val yearOfPractice:String,
+    val price:String,
+    val successRate:String
+
 )
 

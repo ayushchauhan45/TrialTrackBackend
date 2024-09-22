@@ -29,11 +29,7 @@ fun Route.lawyerDetail(lawyerService: LawyerService) {
                     return@post
                 }
 
-                val lawyer = Lawyer(
-                    name = requestLawyer.name,
-                    type = requestLawyer.type
-                )
-                 val insertLawyer = lawyerService.insertLawyer(lawyer)
+                 val insertLawyer = lawyerService.insertLawyer(requestLawyer)
                 if(!insertLawyer){
                     call.respond(HttpStatusCode.Conflict,"Not added")
                 }

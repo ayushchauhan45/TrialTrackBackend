@@ -14,8 +14,8 @@ class LawyerRepositoryImpl(
     }
 
     override suspend fun getLawyerByID(lawyerId: String): Lawyer? {
-        val lawyer = dbLawyer.findOneById(lawyerId)
-        return lawyer
+       return dbLawyer.findOneById(lawyerId)
+
     }
 
     override suspend fun getLawyers(): List<Lawyer> {
