@@ -2,6 +2,7 @@ package example.com.repository.lawyer
 
 import example.com.data.model.Lawyer
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.`in`
 
 class LawyerRepositoryImpl(
     db:CoroutineDatabase
@@ -18,8 +19,11 @@ class LawyerRepositoryImpl(
 
     }
 
-    override suspend fun getLawyers(): List<Lawyer> {
-        TODO("Not yet implemented")
+    override suspend fun getLawyers(lawyerIds:List<String>,page:Int,pageSize:Int): List<Lawyer> {
+        return dbLawyer.find(Lawyer::lawyerId `in` lawyerIds )
+            .skip(page*pageSize)
+            .limit(pageSize)
+            .toList()
     }
 
     override suspend fun getLawyersByType(type: String): List<Lawyer> {

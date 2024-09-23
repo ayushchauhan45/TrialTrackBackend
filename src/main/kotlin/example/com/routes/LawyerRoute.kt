@@ -17,7 +17,7 @@ import io.ktor.server.routing.*
 fun Route.lawyerDetail(lawyerService: LawyerService) {
     authenticate {
         role("Lawyer"){
-            post("lawyer/detail"){
+            post("api/lawyer/detail"){
                 val requestLawyer = call.receiveOrNull<LawyerRequest>()?:kotlin.run {
                     call.respond(HttpStatusCode.BadRequest,"Bad Request")
                     return@post
@@ -45,7 +45,7 @@ fun Route.lawyerDetail(lawyerService: LawyerService) {
 
 fun Route.getLawyerProfile(lawyerService: LawyerService){
     authenticate {
-            get("lawyer/profile") {
+            get("api/lawyer/profile") {
                 val lawyerId = call.parameters[QueryParams.PARAM_LAWYER_ID]
                 if (lawyerId.isNullOrBlank()) {
                     call.respond(HttpStatusCode.BadRequest)
@@ -71,5 +71,38 @@ fun Route.getLawyerProfile(lawyerService: LawyerService){
                     )
                 )
             }
+    }
+}
+fun Route.getLawyers(lawyerService: LawyerService){
+    authenticate {
+        get("api/lawyers") {
+            val lawyerIdParams = call.parameters[QueryParams.PARAM_LAWYER_ID]
+            if (lawyerIdParams.isNullOrBlank()) {
+                call.respond(HttpStatusCode.BadRequest)
+                return@get
+            }
+            val lawyerIds = lawyerIdParams.split(",").map { it.trim() }
+
+
+            val getLawyers = lawyerService.getLawyers(lawyerIds)
+            if (getLawyers.isEmpty()) {
+                call.respond(
+                    HttpStatusCode.ExpectationFailed,
+                    BasicApiResponse<Unit>(
+                        successful = false,
+                        message = ApiResponseMessage.USER_NOT_FOUND
+                    )
+                )
+                return@get
+            }
+
+            call.respond(
+                HttpStatusCode.OK,
+                BasicApiResponse(
+                    successful = true,
+                    data = getLawyers
+                )
+            )
+        }
     }
 }

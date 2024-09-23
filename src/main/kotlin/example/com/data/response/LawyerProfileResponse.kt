@@ -1,9 +1,7 @@
-package example.com.data.request
+package example.com.data.response
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class LawyerRequest(
+data class LawyerProfileResponse(
+    val lawyerId:String,
     val name:String,
     val type:String,
     val bio:String,

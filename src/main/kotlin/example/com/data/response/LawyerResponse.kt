@@ -1,12 +1,10 @@
 package example.com.data.response
 
 data class LawyerResponse(
+    val lawyerId:String,
     val name:String,
     val type:String,
-    val Bio:Long,
+    val bio:String,
+    val fees:String,
     val profilePicture:String,
-    val graduation:String,
-    val yearOfPractice:String,
-    val price:String,
-    val successRate:String
 )

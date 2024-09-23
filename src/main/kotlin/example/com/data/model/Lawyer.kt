@@ -9,10 +9,10 @@ data class Lawyer(
     val name:String,
     val type:String,
     val profilePicture:String,
-    val bio:Long,
+    val bio:String,
     val graduation:String,
     val yearOfPractice:String,
-    val price:String,
+    val fees:String,
     val successRate:String
 )
 
