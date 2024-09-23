@@ -55,5 +55,19 @@ class LawyerService(
         )
     }
 
+    suspend fun getLawyerByType(type:String):List<LawyerResponse>{
+        val getLawyerByType =  lawyerRepository.getLawyersByType(type)
+        return getLawyerByType.map { type->
+            LawyerResponse(
+                lawyerId = type.lawyerId,
+                name = type.name ,
+                bio = type.bio,
+                type = type.type,
+                profilePicture = type.type,
+                fees = type.fees
+            )
+        }
+    }
+
 
 }

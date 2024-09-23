@@ -3,6 +3,7 @@ package example.com.routes
 import example.com.data.model.Client
 import example.com.data.request.DetailRequest
 import example.com.repository.client.ClientDetailRepository
+import example.com.service.ClientService
 import example.com.util.role
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -12,7 +13,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 
-fun Route.userDetail(clientDetailRepository: ClientDetailRepository){
+fun Route.userClientDetail(clientService: ClientService){
     authenticate {
         role("Client") {
             post("/user/client/detail") {
@@ -35,7 +36,7 @@ fun Route.userDetail(clientDetailRepository: ClientDetailRepository){
                     state = detailRequest.state,
                     image = detailRequest.image
                 )
-                val enterDetail = clientDetailRepository.enterClientDetail(client)
+                val enterDetail = clientService.enterClientDetail(client)
 
                 if (!enterDetail) {
                     call.respond(HttpStatusCode.BadRequest, "Detail Not Entered......try again")

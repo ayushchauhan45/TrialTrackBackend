@@ -75,34 +75,70 @@ fun Route.getLawyerProfile(lawyerService: LawyerService){
 }
 fun Route.getLawyers(lawyerService: LawyerService){
     authenticate {
-        get("api/lawyers") {
-            val lawyerIdParams = call.parameters[QueryParams.PARAM_LAWYER_ID]
-            if (lawyerIdParams.isNullOrBlank()) {
-                call.respond(HttpStatusCode.BadRequest)
-                return@get
-            }
-            val lawyerIds = lawyerIdParams.split(",").map { it.trim() }
+        role("Client") {
+            get("api/lawyers") {
+                val lawyerIdParams = call.parameters[QueryParams.PARAM_LAWYER_ID]
+                if (lawyerIdParams.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@get
+                }
+                val lawyerIds = lawyerIdParams.split(",").map { it.trim() }
 
 
-            val getLawyers = lawyerService.getLawyers(lawyerIds)
-            if (getLawyers.isEmpty()) {
+                val getLawyers = lawyerService.getLawyers(lawyerIds)
+                if (getLawyers.isEmpty()) {
+                    call.respond(
+                        HttpStatusCode.ExpectationFailed,
+                        BasicApiResponse<Unit>(
+                            successful = false,
+                            message = ApiResponseMessage.USER_NOT_FOUND
+                        )
+                    )
+                    return@get
+                }
+
                 call.respond(
-                    HttpStatusCode.ExpectationFailed,
-                    BasicApiResponse<Unit>(
-                        successful = false,
-                        message = ApiResponseMessage.USER_NOT_FOUND
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = true,
+                        data = getLawyers
                     )
                 )
-                return@get
             }
+        }
+    }
+}
+fun Route.getLawyersByType(
+    lawyerService: LawyerService
+){
+    authenticate {
+        role("Client"){
+            get("api/lawyer/{lawyerType}") {
+                val type = call.parameters["lawyerType"]
+                if (type.isNullOrBlank()){
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@get
+                }
+                val getLawyers = lawyerService.getLawyerByType(type)
+                if (getLawyers.isEmpty()) {
+                    call.respond(
+                        HttpStatusCode.ExpectationFailed,
+                        BasicApiResponse<Unit>(
+                            successful = false,
+                            message = ApiResponseMessage.USER_NOT_FOUND
+                        )
+                    )
+                    return@get
+                }
 
-            call.respond(
-                HttpStatusCode.OK,
-                BasicApiResponse(
-                    successful = true,
-                    data = getLawyers
+                call.respond(
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = true,
+                        data = getLawyers
+                    )
                 )
-            )
+            }
         }
     }
 }

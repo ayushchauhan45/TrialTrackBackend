@@ -2,6 +2,7 @@ package example.com.repository.lawyer
 
 import example.com.data.model.Lawyer
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
 import org.litote.kmongo.`in`
 
 class LawyerRepositoryImpl(
@@ -27,6 +28,6 @@ class LawyerRepositoryImpl(
     }
 
     override suspend fun getLawyersByType(type: String): List<Lawyer> {
-        TODO("Not yet implemented")
+        return dbLawyer.find(Lawyer::type  eq type).toList()
     }
 }
