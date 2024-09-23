@@ -4,7 +4,6 @@ import example.com.data.model.Lawyer
 import example.com.data.request.LawyerRequest
 import example.com.data.response.LawyerResponse
 import example.com.repository.lawyer.LawyerRepository
-import io.ktor.http.*
 
 class LawyerService(
     private val lawyerRepository: LawyerRepository
@@ -14,7 +13,8 @@ class LawyerService(
             Lawyer(
                 name = request.name,
                 type = request.type,
-                Bio= request.Bio,
+                bio= request.Bio,
+                profilePicture = request.profilePicture,
                 graduation = request.graduation,
                 yearOfPractice= request.yearOfPractice,
                 price= request.price ,
@@ -23,12 +23,13 @@ class LawyerService(
         )
     }
 
-    suspend fun getLawyerProfile(userId:String): LawyerResponse? {
-        val getLawyer = lawyerRepository.getLawyerByID(userId) ?: return null
+    suspend fun getLawyerProfile(lawyerId:String): LawyerResponse? {
+        val getLawyer = lawyerRepository.getLawyerByID(lawyerId) ?: return null
         return LawyerResponse(
             name = getLawyer.name,
             type = getLawyer.name,
-            Bio= getLawyer.Bio,
+            Bio= getLawyer.bio,
+            profilePicture = getLawyer.profilePicture,
             graduation = getLawyer.graduation,
             yearOfPractice= getLawyer.yearOfPractice,
             price= getLawyer.price ,

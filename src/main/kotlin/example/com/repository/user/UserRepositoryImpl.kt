@@ -20,10 +20,4 @@ class UserRepositoryImpl(db:CoroutineDatabase): UserRepository {
            User::email eq email
       )
     }
-
-    override suspend fun doesPasswordForUserMatch(email: String, enteredPassword: String): Boolean {
-        val correctEmail = getUserByEmail(email)
-
-        return correctEmail?.password == enteredPassword
-    }
 }

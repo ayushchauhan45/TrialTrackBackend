@@ -1,11 +1,12 @@
 package example.com.routes
 
-import example.com.data.model.Lawyer
+
 import example.com.data.request.LawyerRequest
-import example.com.repository.lawyer.LawyerRepository
+import example.com.data.response.BasicApiResponse
 import example.com.service.LawyerService
+import example.com.util.ApiResponseMessage
+import example.com.util.QueryParams
 import example.com.util.role
-import io.ktor.client.engine.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -40,5 +41,35 @@ fun Route.lawyerDetail(lawyerService: LawyerService) {
             }
         }
     }
+}
 
+fun Route.getLawyerProfile(lawyerService: LawyerService){
+    authenticate {
+            get("lawyer/profile") {
+                val lawyerId = call.parameters[QueryParams.PARAM_LAWYER_ID]
+                if (lawyerId.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@get
+                }
+                val getLawyerProfile = lawyerService.getLawyerProfile(lawyerId)
+                if (getLawyerProfile == null) {
+                    call.respond(
+                        HttpStatusCode.ExpectationFailed,
+                        BasicApiResponse<Unit>(
+                            successful = false,
+                            message = ApiResponseMessage.USER_NOT_FOUND
+                        )
+                    )
+                    return@get
+                }
+
+                call.respond(
+                    HttpStatusCode.OK,
+                    BasicApiResponse(
+                        successful = true,
+                        data = getLawyerProfile
+                    )
+                )
+            }
+    }
 }
