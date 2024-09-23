@@ -1,5 +1,6 @@
 package example.com
 
+import example.com.di.mainModule
 import example.com.util.Utils
 import example.com.security.token.tokenConfig
 import example.com.plugins.*
@@ -12,6 +13,7 @@ import example.com.service.ClientService
 import example.com.service.LawyerService
 import example.com.service.UserService
 import io.ktor.server.application.*
+import org.koin.ktor.plugin.Koin
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
@@ -22,8 +24,9 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
 
-    val dbClient = KMongo.createClient(connectionString = "mongodb+srv://ayushchauhan:ayushchauhan@ayush.ulpcu.mongodb.net/").coroutine.getDatabase(
-        Utils.DATABASE_NAME)
+    install(Koin) {
+        modules(mainModule)
+    }
 
     val tokenConfig = tokenConfig(
         issuer = environment.config.property("jwt.issuer").getString(),
@@ -31,14 +34,8 @@ fun Application.module() {
         expiresIn = 365L *1000L* 60L*60L*24L,
         secret = System.getenv("JWT_SECRET")
     )
- val userDataRepository = UserRepositoryImpl(dbClient)
- val tokenService = TokenServiceImpl()
- val hashing = SHA56HashingImpl()
- val clientDetailRepository = ClientDetailRepositoryImpl(dbClient)
-    val lawyerRepository = LawyerRepositoryImpl(dbClient)
-    val userService = UserService(userDataRepository)
-    val clientService = ClientService(clientDetailRepository)
-    val lawyerService = LawyerService(lawyerRepository)
+
+
 
 
     configureSecurity(tokenConfig)
@@ -46,7 +43,7 @@ fun Application.module() {
     configureSerialization()
     configureFrameworks()
     configureMonitoring()
-    configureRouting(userService,hashing,tokenService,tokenConfig,clientService,lawyerService)
+    configureRouting()
 
 
 
